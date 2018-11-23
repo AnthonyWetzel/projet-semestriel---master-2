@@ -28,10 +28,10 @@ except:
     from qgis.PyQt.QtWidgets import QAction
 
 # Initialize Qt resources from file resources.py
-import resources
+from . import resources
 
 # Import the code for the DockWidget
-from Batplugin_dockwidget import BatPluginDockWidget
+from .Batplugin_dockwidget import BatPluginDockWidget
 import os.path
 
 
