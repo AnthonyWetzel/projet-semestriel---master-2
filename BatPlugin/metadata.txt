@@ -9,6 +9,7 @@
 [general]
 name=BatPlugin
 qgisMinimumVersion=2.0
+qgisMaximumVersion=3.99
 description=test
 version=0.1
 author=chrwiziCorp
