@@ -23,15 +23,19 @@
 
 import os
 
-from PyQt4 import QtGui, uic
-from PyQt4.QtCore import pyqtSignal
+from qgis.PyQt import QtGui, uic
+from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsExpression
+try:
+    from qgis.PyQt.QtGui import QDockWidget
+except:
+    from qgis.PyQt.QtWidgets import QDockWidget
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'Batplugin_dockwidget_base.ui'))
 
 
-class BatPluginDockWidget(QtGui.QDockWidget, FORM_CLASS):
+class BatPluginDockWidget(QDockWidget, FORM_CLASS):
 
     closingPlugin = pyqtSignal()
 

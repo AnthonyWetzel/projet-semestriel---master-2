@@ -20,8 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, Qt
-from PyQt4.QtGui import QAction, QIcon
+from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, Qt
+from qgis.PyQt.QtGui import QIcon
+try:
+    from qgis.PyQt.QtGui import QAction
+except:
+    from qgis.PyQt.QtWidgets import QAction
+
 # Initialize Qt resources from file resources.py
 import resources
 
