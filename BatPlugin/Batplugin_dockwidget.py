@@ -23,6 +23,7 @@
 
 import os
 
+from algorithmNewPoint import *
 from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsExpression
@@ -59,6 +60,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         #test
         self.btnSelect1.clicked.connect(self.slotSelect)
         self.btnSelect2.clicked.connect(self.slotDeselect)
+	
+	self.calculNewPoint.clicked.connect(self.slotCalculNewPoint)
 
 
     def closeEvent(self, event):
@@ -105,3 +108,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
     def slotDeselect(self):
         layer=self.ifaceRef.activeLayer()
         layer.deselect(6)
+
+    def slotCalculNewPoint(self):
+	x,y=dst(46.59103,5.46573,81,2)
+	layer=self.labelNewPoint.setText(str(x)+" "+str(y))
+

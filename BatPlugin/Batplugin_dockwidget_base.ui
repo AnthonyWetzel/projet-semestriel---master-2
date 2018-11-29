@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>663</width>
+    <width>603</width>
     <height>283</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <item row="1" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -27,8 +27,8 @@
        <widget class="QWidget" name="formLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>60</x>
-          <y>30</y>
+          <x>40</x>
+          <y>20</y>
           <width>160</width>
           <height>54</height>
          </rect>
@@ -142,6 +142,32 @@
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout"/>
+       </widget>
+       <widget class="QPushButton" name="calculNewPoint">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>60</y>
+          <width>141</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Calcul new point</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="labelNewPoint">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>40</y>
+          <width>231</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
        </widget>
       </widget>
      </widget>
