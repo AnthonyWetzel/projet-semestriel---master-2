@@ -23,7 +23,9 @@
 
 import os
 
+from createLineLayer import *
 from algorithmNewPoint import *
+
 from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsExpression
@@ -110,6 +112,6 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         layer.deselect(6)
 
     def slotCalculNewPoint(self):
-	x,y=dst(46.59103,5.46573,81,2)
-	layer=self.labelNewPoint.setText(str(x)+" "+str(y))
+        layer=self.ifaceRef.activeLayer()
+	createLine(layer.getFeatures(),'coordonnees_wgs84_n','coordonnees_wgs84_e')
 
