@@ -66,6 +66,8 @@ class BatPlugin:
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
 
+        self.dlg = BatPluginDockWidget()
+
         # Declare instance attributes
         self.actions = []
         self.menu = self.tr(u'&BatPlugin')
@@ -77,6 +79,7 @@ class BatPlugin:
 
         self.pluginIsActive = False
         self.dockwidget = None
+
 
 
     # noinspection PyMethodMayBeStatic
@@ -215,6 +218,7 @@ class BatPlugin:
 
     def run(self):
         """Run method that loads and starts the plugin"""
+        print(len(self.iface.legendInterface().layers()))
 
         if not self.pluginIsActive:
             self.pluginIsActive = True

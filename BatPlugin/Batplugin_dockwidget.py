@@ -21,10 +21,15 @@
  ***************************************************************************/
 """
 
-import os
+import os, csv, sys
+from qgis.PyQt import QtCore
+
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
 
 from createLineLayer import *
 from algorithmNewPoint import *
+from createPrincipalLayer import *
 
 from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtCore import pyqtSignal
@@ -63,6 +68,12 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.btnSelect1.clicked.connect(self.slotSelect)
         self.btnSelect2.clicked.connect(self.slotDeselect)
 	
+        self.pushButton_2.clicked.connect(self.generate_data_table)
+        self.pushButton_3.clicked.connect(self.getfile)
+        self.textEdit.clear()
+        self.pushButton_4.clicked.connect(self.save)
+        self.pushButton.clicked.connect(self.save_as)
+
 	self.calculNewPoint.clicked.connect(self.slotCalculNewPoint)
 
 
@@ -115,3 +126,115 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         layer=self.ifaceRef.activeLayer()
 	createLine(layer.getFeatures(),'coordonnees_wgs84_n','coordonnees_wgs84_e')
 
+    def slotBatLayer(self,listPoints):
+        #layer=self.ifaceRef.activeLayer()
+        #print(inX,inY)
+        createPoint(listPoints)
+
+    def generate_data_table(self):
+
+        layers = self.ifaceRef.legendInterface().layers()
+        try:
+
+            selectedLayer = layers[len(layers)-2]
+            fields = selectedLayer.pendingFields()  
+            fieldnames = [field.name() for field in fields]
+
+            qTable = self.tableWidget
+            qTable.setRowCount(39)#"""changer pour length"""
+            qTable.setColumnCount(9)
+
+            headers = ['Id_indiv','Individu','Date','Coordonnées_WGS84_N','Coordonnées_WGS84_E','azimuœt','niveau_filtre','puissance_signal','Info additionnelle']
+            qTable.setHorizontalHeaderLabels(headers)
+            qTable.resizeColumnsToContents()
+            qTable.resizeRowsToContents()
+            n = 0
+            for key in selectedLayer.getFeatures():
+                m = 0
+                for item in fieldnames:
+                    newitem = QTableWidgetItem(unicode(key[item]))
+                    qTable.setItem(n, m, newitem)
+                    m += 1
+                n += 1    
+            qTable.resizeColumnsToContents()
+            qTable.resizeRowsToContents()
+        except:
+            print('No layer exists')
+
+    def getfile(self):
+        self.model = QtGui.QStandardItemModel(self)
+        
+        layerPoints = []
+
+        qTable = self.tableView
+
+        headers = ['id_observation','id_individu','date','coordonnees_wgs84_n','coordonnees_wgs84_e','azimut','niveau_filtre','puissance_signal']
+ 
+        self.model.setHorizontalHeaderLabels(headers)
+
+        dlg = QFileDialog()
+        dlg.setFileMode(QFileDialog.AnyFile)
+        dlg.setFilter("Text files (*.csv)")
+        #filenames = QStringList()
+
+        if dlg.exec_():
+            filenames = dlg.selectedFiles()
+            self.textEdit.setText(filenames[0])
+            with open(filenames[0], "rb") as fileInput:
+                for row in csv.reader(fileInput):  
+                    #print(row)  
+                    items = [
+                        QtGui.QStandardItem(field.decode('utf-8'))
+                        for field in row
+                    ]
+                    self.model.appendRow(items)
+            qTable.setModel(self.model)
+            #print(self.model.rowCount())
+            #print(self.model.columnCount())
+            #test = self.model.takeRow(1)
+            #self.model.appendRow(test)
+            #print(test[3].text())
+            #print(test[4].text())
+            #print(self.model)
+            
+            for feature in range(self.model.rowCount()):
+            #for m in range(1):
+                currentRow = self.model.takeRow(feature)
+                self.model.insertRow(feature,currentRow)
+                #print(test[3].text())
+                #print(test[4].text())
+                x = float(currentRow[3].text())
+                y = float(currentRow[4].text())
+                layerPoints.append([y,x])
+            #print(layerPoints)
+            self.slotBatLayer(layerPoints)
+
+    def save(self):
+        try:
+            fileName = self.textEdit.toPlainText()
+            output_file = open(fileName, 'w')
+
+            with open(fileName, "wb") as fileOutput:
+                writer = csv.writer(fileOutput)        
+                for feature in range(self.model.rowCount()):
+                    aux = []
+                    currentRow = self.model.takeRow(feature)
+                    self.model.insertRow(feature,currentRow)
+                    for n in range(self.model.columnCount()):
+                        aux.append((currentRow[n].text()).encode('utf-8').strip())
+                    line = ','.join(aux) + '\n'
+                    #print('line',line)
+                    unicode_line = line
+                    output_file.write(unicode_line)
+                output_file.close()
+            print('File already saved')
+        except: 
+            print('Error saving file')
+
+    def save_as(self):
+        try:
+            filename = QFileDialog.getSaveFileName(self, "Select output file ","", '*.csv')
+            self.textEdit.setText(filename+'.csv')
+            self.save()
+        except:
+            print('Error saving file')
