@@ -27,7 +27,7 @@ from qgis.PyQt import QtCore
 from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtGui import *
 
-from createLineLayer import *
+from createLine import *
 from algorithmNewPoint import *
 from createPrincipalLayer import *
 
@@ -73,8 +73,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.textEdit.clear()
         self.pushButton_4.clicked.connect(self.save)
         self.pushButton.clicked.connect(self.save_as)
-
-	self.calculNewPoint.clicked.connect(self.slotCalculNewPoint)
+        self.pushButton_5.clicked.connect(self.createLineLayer)
 
 
     def closeEvent(self, event):
@@ -126,10 +125,13 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         layer=self.ifaceRef.activeLayer()
 	createLine(layer.getFeatures(),'coordonnees_wgs84_n','coordonnees_wgs84_e')
 
-    def slotBatLayer(self,listPoints):
+    def slotBatLayer(self,coordPoint):
         #layer=self.ifaceRef.activeLayer()
         #print(inX,inY)
-        createPoint(listPoints)
+        createPoints(coordPoint)
+    def slotLineLayer(self,coordLines):
+        createLines(coordLines)
+
 
     def generate_data_table(self):
 
@@ -160,6 +162,25 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             qTable.resizeRowsToContents()
         except:
             print('No layer exists')
+
+    def createLineLayer(self):
+        try:
+            layerLine = []
+            for feature in range(self.model.rowCount()):
+                #for m in range(1):
+                    currentRow = self.model.takeRow(feature)
+                    self.model.insertRow(feature,currentRow)
+                    x = float(currentRow[3].text())
+                    y = float(currentRow[4].text())
+                    azimut = float(currentRow[5].text())
+                    puissance_signal = float(currentRow[7].text())
+                    niveau_filtre = float(currentRow[6].text())
+                    layerLine.append([x,y,azimut,puissance_signal,niveau_filtre])
+                #print(layerPoints)
+            self.slotLineLayer(layerLine)
+        except:
+            print('Error crating line layer')
+
 
     def getfile(self):
         self.model = QtGui.QStandardItemModel(self)

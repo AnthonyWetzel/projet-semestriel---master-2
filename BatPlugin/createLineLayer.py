@@ -33,7 +33,7 @@ def createLine(feat_list,x_col,y_col):
 		x_coord = feature[x_col]
 		y_coord = feature[y_col]
 
-		x_res,y_res = dst(float(x_col),float(y_col),feature['azimut'],feature['puissance_signal']+feature['niveau_filtre'])
+		x_res,y_res = dst(x_coord,y_coord,float(feature['azimut']),float(feature['puissance_signal'])+float(feature['niveau_filtre']))
 
 		point = QgsPoint(y_coord,x_coord)
 		point2 = QgsPoint(y_res,x_res)
