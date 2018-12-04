@@ -197,7 +197,10 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
 
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.AnyFile)
-        dlg.setFilter("Text files (*.csv)")
+        try:
+            dlg.setFilter("Text files (*.csv)")
+        except:
+            dlg.setNameFilter("Text files (*.csv)")
         #filenames = QStringList()
 
         if dlg.exec_():
