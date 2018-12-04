@@ -74,7 +74,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.pushButton_4.clicked.connect(self.save)
         self.pushButton.clicked.connect(self.save_as)
         self.pushButton_5.clicked.connect(self.createLineLayer)
-
+        self.tableView.clicked.connect(self.actionTable)
+        self.tableView.setSelectionBehavior(QTableView.SelectRows);
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -121,9 +122,9 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         layer=self.ifaceRef.activeLayer()
         layer.deselect(6)
 
-    def slotCalculNewPoint(self):
-        layer=self.ifaceRef.activeLayer()
-	createLine(layer.getFeatures(),'coordonnees_wgs84_n','coordonnees_wgs84_e')
+    #def slotCalculNewPoint(self):
+        #layer=self.ifaceRef.activeLayer()
+        #createLine(layer.getFeatures(),'coordonnees_wgs84_n','coordonnees_wgs84_e')
 
     def slotBatLayer(self,coordPoint):
         #layer=self.ifaceRef.activeLayer()
@@ -210,6 +211,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                     ]
                     self.model.appendRow(items)
             qTable.setModel(self.model)
+            qTable.resizeColumnsToContents()
+            qTable.resizeRowsToContents()
             #print(self.model.rowCount())
             #print(self.model.columnCount())
             #test = self.model.takeRow(1)
@@ -259,3 +262,11 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.save()
         except:
             print('Error saving file')
+
+    def actionTable(self):
+        #print('tableView ',self.tableView)
+        self.tableView.setSelectionBehavior(QTableView.SelectRows);
+        xx = self.tableView.selectedIndexes()
+        #print('index ',xx)
+        #print('index 0',xx[0])
+        #print(xx[0][0])

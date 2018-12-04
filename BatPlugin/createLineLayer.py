@@ -41,7 +41,7 @@ def createLine(feat_list,x_col,y_col):
 		# Add a new feature and assign the geometry
 		feat = QgsFeature()
 		feat.setGeometry(QgsGeometry.fromPolyline([point, point2]))
-		features.add(feat)		
+		features.	add(feat)		
 
 	prov.addFeatures(features)
 
