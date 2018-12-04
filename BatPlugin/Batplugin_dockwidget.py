@@ -26,18 +26,19 @@ from qgis.PyQt import QtCore
 
 from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
-from createLine import *
-from algorithmNewPoint import *
-from createPrincipalLayer import *
+from .createLine import *
+from .algorithmNewPoint import *
+from .createPrincipalLayer import *
 
 from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsExpression
 try:
-    from qgis.PyQt.QtGui import QDockWidget
+    from qgis.PyQt.QtGui import QDockWidget, QTableView
 except:
-    from qgis.PyQt.QtWidgets import QDockWidget
+    from qgis.PyQt.QtWidgets import QDockWidget, QTableView
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'Batplugin_dockwidget_base.ui'))

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 from qgis.utils import iface
 from qgis.core import *
-from algorithmNewPoint import *
+from .algorithmNewPoint import *
 
 def createLines(coordLines):
 	legend = iface.legendInterface()

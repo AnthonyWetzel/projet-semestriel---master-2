@@ -218,7 +218,8 @@ class BatPlugin:
 
     def run(self):
         """Run method that loads and starts the plugin"""
-        print(len(self.iface.legendInterface().layers()))
+        #layers = [layer for layer in QgsProject.instance().mapLayers().values()]
+        #print(len(self.iface.legendInterface().layers()))
 
         if not self.pluginIsActive:
             self.pluginIsActive = True
