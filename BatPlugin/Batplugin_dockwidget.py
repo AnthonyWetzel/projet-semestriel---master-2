@@ -206,13 +206,19 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         if dlg.exec_():
             filenames = dlg.selectedFiles()
             self.textEdit.setText(filenames[0])
-            with open(filenames[0], "rb") as fileInput:
+            with open(filenames[0], "rt") as fileInput:
                 for row in csv.reader(fileInput):  
-                    #print(row)  
-                    items = [
-                        QtGui.QStandardItem(field.decode('utf-8'))
-                        for field in row
-                    ]
+                    #print(row)
+                    try:
+                        items = [
+                            QtGui.QStandardItem(field.decode('utf-8'))
+                            for field in row
+                        ]
+                    except:
+                        items = [
+                            QtGui.QStandardItem(field)
+                            for field in row
+                        ]
                     self.model.appendRow(items)
             qTable.setModel(self.model)
             qTable.resizeColumnsToContents()
