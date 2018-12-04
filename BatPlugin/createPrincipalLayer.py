@@ -19,7 +19,7 @@ def createPoints(coordPoint):
 	layer_point = QgsVectorLayer('Point?crs=epsg:4230', 'batLayer' , 'memory')
 
 	prov_point = layer_point.dataProvider()
-	print(coordPoint)
+	#print(coordPoint)
 
 	for point in coordPoint:
 		inX = point[0]
