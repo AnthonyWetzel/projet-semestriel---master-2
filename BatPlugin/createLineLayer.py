@@ -15,8 +15,11 @@ def createFeatList():
 
 def createLine(feat_list,x_col,y_col):
 	# Remove Point and Line layers
-	legend = iface.legendInterface()
-	layers = legend.layers()
+        try:
+            legend = iface.legendInterface()
+            layers = legend.layers()
+        except:
+            layers = [layer for layer in QgsProject.instance().mapLayers().values()]
 	for layer in layers:
 		if layer.name() == 'line':
 			QgsMapLayerRegistry.instance().removeMapLayers( [layer.id()] )
@@ -53,8 +56,11 @@ def createLine(feat_list,x_col,y_col):
 
 def createLine2(latitude,longitude):
 	# Remove Point and Line layers
-	legend = iface.legendInterface()
-	layers = legend.layers()
+        try:
+            legend = iface.legendInterface()
+            layers = legend.layers()
+        except:
+            layers = [layer for layer in QgsProject.instance().mapLayers().values()]
 	for layer in layers:
 		if layer.name() == 'line':
 			QgsMapLayerRegistry.instance().removeMapLayers( [layer.id()] )
