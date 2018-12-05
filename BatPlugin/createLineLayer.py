@@ -34,6 +34,7 @@ def createLines(coordLines):
 	 
 	# Add the layer to the Layers panel
 
-	QgsMapLayerRegistry.instance().addMapLayers([layer_line])
-
-
+	try:
+		QgsMapLayerRegistry.instance().addMapLayers([layer_line])
+	except:
+		QgsProject.instance().addMapLayers([layer_line])
