@@ -2,21 +2,14 @@
 from qgis.utils import iface
 from qgis.core import *
 from algorithmNewPoint import *
+from clearLayers import *
 
 def createLines(coordLines):
-	legend = iface.legendInterface()
-	layers = legend.layers()
-	for layer in layers:
-		if layer.name() == 'lineLayer':
-			QgsMapLayerRegistry.instance().removeMapLayers( [layer.id()] )
-
+	clearLinesLayer()
 	# Specify the geometry type
 	layer_line = QgsVectorLayer('LineString?crs=epsg:4230','lineLayer','memory')
 
 	prov_line = layer_line.dataProvider()
-
-	print('Coordones : ',coordLines)
-	print(len(coordLines))
 
 	features = []
 	for coordonnee in coordLines:
@@ -37,14 +30,3 @@ def createLines(coordLines):
 	 
 	# Add the layer to the Layers panel
 	QgsMapLayerRegistry.instance().addMapLayers([layer_line])
-
-	#for point in coordLine:
-		#inX = point[0]
-		#inY = point[1]
-		#print(inX,inY)
-		#point = QgsPoint(inX,inY)
-		#feat_point = QgsFeature()
-		#feat_point.setGeometry(QgsGeometry.fromPoint(point))
-		#prov_point.addFeatures([feat_point])
-		#layer_point.updateExtents()
-		#QgsMapLayerRegistry.instance().addMapLayers([layer_point])

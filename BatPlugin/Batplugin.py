@@ -80,7 +80,7 @@ class BatPlugin:
         self.pluginIsActive = False
         self.dockwidget = None
 
-
+        
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -218,7 +218,7 @@ class BatPlugin:
 
     def run(self):
         """Run method that loads and starts the plugin"""
-        print(len(self.iface.legendInterface().layers()))
+        #print(len(self.iface.legendInterface().layers()))
 
         if not self.pluginIsActive:
             self.pluginIsActive = True
@@ -232,7 +232,7 @@ class BatPlugin:
                 # Create the dockwidget (after translation) and keep reference
                 self.dockwidget = BatPluginDockWidget()
 
-                self.dockwidget.setIfaceRef(self.iface)
+                #self.dockwidget.setIfaceRef(self.iface)
 
             # connect to provide cleanup on closing of dockwidget
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
