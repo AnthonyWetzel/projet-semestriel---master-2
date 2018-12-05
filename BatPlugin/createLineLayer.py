@@ -2,7 +2,7 @@
 from qgis.utils import iface
 from qgis.core import *
 from .algorithmNewPoint import *
-from clearLayers import *
+from .clearLayers import *
 
 """
 """

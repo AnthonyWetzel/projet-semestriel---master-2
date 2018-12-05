@@ -35,7 +35,7 @@ from .createPrincipalLayer import *
 from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsExpression
-from clearLayers import *
+from .clearLayers import *
 
 try:
     from qgis.PyQt.QtGui import QDockWidget, QTableView
