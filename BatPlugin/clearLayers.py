@@ -7,7 +7,7 @@ def clearLinesLayer():
 	try:
             legend = iface.legendInterface()
             layers = legend.layers()
-        except:
+	except:
             layers = [layer for layer in QgsProject.instance().mapLayers().values()]
 	for layer in layers:
 		if layer.name() == 'lineLayer':
@@ -21,7 +21,7 @@ def clearBatLayer():
 	try:
             legend = iface.legendInterface()
             layers = legend.layers()
-        except:
+	except:
             layers = [layer for layer in QgsProject.instance().mapLayers().values()]
 	for layer in layers:
 		if layer.name() == 'batLayer':
