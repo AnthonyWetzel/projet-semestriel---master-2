@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*
 from qgis.utils import iface
 from qgis.core import *
-from algorithmNewPoint import *
+from .algorithmNewPoint import *
 from clearLayers import *
+
+"""
+"""
+
 
 def createLines(coordLines):
 	clearLinesLayer()
@@ -29,4 +33,7 @@ def createLines(coordLines):
 	layer_line.updateExtents()
 	 
 	# Add the layer to the Layers panel
+
 	QgsMapLayerRegistry.instance().addMapLayers([layer_line])
+
+

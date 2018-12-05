@@ -26,10 +26,11 @@ from qgis.PyQt import QtCore
 
 from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
-from createLineLayer import *
-from algorithmNewPoint import *
-from createPrincipalLayer import *
+from .createLineLayer import *
+from .algorithmNewPoint import *
+from .createPrincipalLayer import *
 
 from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtCore import pyqtSignal
@@ -37,9 +38,9 @@ from qgis.core import QgsExpression
 from clearLayers import *
 
 try:
-    from qgis.PyQt.QtGui import QDockWidget
+    from qgis.PyQt.QtGui import QDockWidget, QTableView
 except:
-    from qgis.PyQt.QtWidgets import QDockWidget
+    from qgis.PyQt.QtWidgets import QDockWidget, QTableView
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'Batplugin_dockwidget_base.ui'))
@@ -264,7 +265,12 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         #Select and import csv file
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.AnyFile)
-        dlg.setFilter("Text files (*.csv)")        
+
+        try:
+            dlg.setFilter("Text files (*.csv)")
+        except:
+            dlg.setNameFilter("Text files (*.csv)")
+
         if dlg.exec_():
             filenames = dlg.selectedFiles()
             self.currentProjectText.setText(filenames[0]) # Set the name project in the label text
@@ -285,12 +291,18 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             Extract the rows from the file and save them in the Items list
             After the header validation, if there are not errors header and rows are added to the model
             """
-        with open(filenames, "rb") as fileInput:
+        with open(filenames, "rt") as fileInput:
             for row in csv.reader(fileInput):  
-                items = [
-                    QtGui.QStandardItem(field.decode('utf-8'))
-                    for field in row
-                ]
+                try:
+                        items = [
+                            QtGui.QStandardItem(field.decode('utf-8'))
+                            for field in row
+                        ]
+                except:
+                        items = [
+                            QtGui.QStandardItem(field)
+                            for field in row
+                        ]
                 if flag_header == 0:
                     warning_header,fatal_header = self.header_validation(items)
                     if (len(fatal_header) == 0 and len(warning_header) == 0):

@@ -4,15 +4,28 @@ from qgis.core import *
 from algorithmNewPoint import *
 
 def clearLinesLayer():
-	legend = iface.legendInterface()
-	layers = legend.layers()
+	try:
+            legend = iface.legendInterface()
+            layers = legend.layers()
+        except:
+            layers = [layer for layer in QgsProject.instance().mapLayers().values()]
 	for layer in layers:
 		if layer.name() == 'lineLayer':
-			QgsMapLayerRegistry.instance().removeMapLayers( [layer.id()] )
+			try:
+				QgsMapLayerRegistry.instance().removeMapLayers( [layer.id()] )
+			except:
+				QgsProject.instance().removeMapLayers( [layer.id()] )
+
 
 def clearBatLayer():
-	legend = iface.legendInterface()
-	layers = legend.layers()
+	try:
+            legend = iface.legendInterface()
+            layers = legend.layers()
+        except:
+            layers = [layer for layer in QgsProject.instance().mapLayers().values()]
 	for layer in layers:
 		if layer.name() == 'batLayer':
-			QgsMapLayerRegistry.instance().removeMapLayers( [layer.id()] )
+			try:
+				QgsMapLayerRegistry.instance().removeMapLayers( [layer.id()] )
+			except:
+				QgsProject.instance().removeMapLayers( [layer.id()] )
