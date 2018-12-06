@@ -227,25 +227,25 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         fatal = []
 
         try:
-            if header_in[INDX_ID_OBS].text() != HEADERS[0]:
+            if header_in[INDX_ID_OBS].text() != HEADERS[INDX_ID_OBS]:
                 fatal.append('id_observation error')
-            if header_in[INDX_ID_INDV].text() != HEADERS[1]:
+            if header_in[INDX_ID_INDV].text() != HEADERS[INDX_ID_INDV]:
                 fatal.append('id_individu fatal error')
-            if header_in[INDX_NOM_INDV].text() != HEADERS[2]:
+            if header_in[INDX_NOM_INDV].text() != HEADERS[INDX_NOM_INDV]:
                 fatal.append('nom_individu fatal error')
-            if header_in[INDX_DATE].text() != HEADERS[3]:
+            if header_in[INDX_DATE].text() != HEADERS[INDX_DATE]:
                 fatal.append('date fatal error')
-            if header_in[INDX_X].text() != HEADERS[4]:
+            if header_in[INDX_X].text() != HEADERS[INDX_X]:
                 fatal.append('coordonnees_wgs84_n fatal error')
-            if header_in[INDX_Y].text() != HEADERS[5]:
+            if header_in[INDX_Y].text() != HEADERS[INDX_Y]:
                 fatal.append('coordonnees_wgs84_e fatal error')
-            if header_in[INDX_AZMT].text() != HEADERS[6]:
+            if header_in[INDX_AZMT].text() != HEADERS[INDX_AZMT]:
                 fatal.append('azimut fatal error')
-            if header_in[INDX_NIV_FILT].text() != HEADERS[7]:
+            if header_in[INDX_NIV_FILT].text() != HEADERS[INDX_NIV_FILT]:
                 fatal.append('niveau_filtre fatal error')
-            if header_in[INDX_SIGN].text() != HEADERS[8]:
+            if header_in[INDX_SIGN].text() != HEADERS[INDX_SIGN]:
                 fatal.append('puissance_signal fatal error')
-            if header_in[INDX_COMM].text() != HEADERS[9]:
+            if header_in[INDX_COMM].text() != HEADERS[INDX_COMM]:
                 fatal.append('commentaire fatal error')
         except:
             fatal.append('Fatal error validating header')
