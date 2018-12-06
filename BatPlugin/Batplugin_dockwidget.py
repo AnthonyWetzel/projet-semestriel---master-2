@@ -171,7 +171,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
     def color(self,row_indx_fail):
         for col in range(self.model.columnCount()):
             for i in range(len(row_indx_fail)):
-               self.model.setData(self.model.index(row_indx_fail[i], col), QBrush(Qt.red), QtCore.Qt.BackgroundRole)
+               self.model.setData(self.model.index(row_indx_fail[i], col), QBrush(QColor(Qt.red).lighter()), QtCore.Qt.BackgroundRole)
 
     """Create the observations layer from the imported csv file"""
     def createBatLayer(self):
