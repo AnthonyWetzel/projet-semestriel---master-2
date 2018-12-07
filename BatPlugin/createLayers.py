@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*
 from qgis.utils import iface
 from qgis.core import *
-<<<<<<< HEAD:BatPlugin/createLayers.py
-from algorithmNewPoint import *
-from clearLayers import *
-=======
 from .algorithmNewPoint import *
->>>>>>> f91ca06e87d305c1fe37a5f81d67bb4b887ba86d:BatPlugin/createLine.py
+from .clearLayers import *
 
 def createLines(coordLines):
 	clearLinesLayer()
@@ -33,4 +29,7 @@ def createLines(coordLines):
 	layer_line.updateExtents()
 	 
 	# Add the layer to the Layers panel
-	QgsMapLayerRegistry.instance().addMapLayers([layer_line])
+	try:
+		QgsMapLayerRegistry.instance().addMapLayers([layer_line])
+	except:
+		QgsProject.instance().addMapLayers([layer_line])

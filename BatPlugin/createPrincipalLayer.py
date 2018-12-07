@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 from qgis.utils import iface
 from qgis.core import *
-from clearLayers import *
+from .clearLayers import *
 
 def createPoints(coordPoint):
 	clearBatLayer()

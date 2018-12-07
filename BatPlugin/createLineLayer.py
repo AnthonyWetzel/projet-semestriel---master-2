@@ -2,7 +2,7 @@
 from qgis.utils import iface
 from qgis.core import *
 from .algorithmNewPoint import *
-from clearLayers import *
+from .clearLayers import *
 
 """
 """
@@ -34,6 +34,7 @@ def createLines(coordLines):
 	 
 	# Add the layer to the Layers panel
 
-	QgsMapLayerRegistry.instance().addMapLayers([layer_line])
-
-
+	try:
+		QgsMapLayerRegistry.instance().addMapLayers([layer_line])
+	except:
+		QgsProject.instance().addMapLayers([layer_line])
