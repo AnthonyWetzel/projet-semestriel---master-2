@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>969</width>
-    <height>608</height>
+    <width>940</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>940</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>BatPlugin</string>
@@ -17,12 +23,18 @@
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="maximumSize">
+       <size>
+        <width>930</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="init_tab">
        <attribute name="title">
-        <string>Page</string>
+        <string>Principal</string>
        </attribute>
        <widget class="QPushButton" name="importButton">
         <property name="geometry">
@@ -38,13 +50,19 @@
         </property>
        </widget>
        <widget class="QTableView" name="tableView">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>931</width>
-          <height>411</height>
+          <width>900</width>
+          <height>400</height>
          </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::WinPanel</enum>
         </property>
         <property name="horizontalScrollBarPolicy">
          <enum>Qt::ScrollBarAsNeeded</enum>
@@ -83,6 +101,17 @@
           <width>481</width>
           <height>31</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <italic>true</italic>
+         </font>
+        </property>
+        <property name="cursor" stdset="0">
+         <cursorShape>BlankCursor</cursorShape>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
         </property>
        </widget>
        <widget class="QLabel" name="label_6">
@@ -135,6 +164,27 @@
         </property>
         <property name="text">
          <string>Refresh</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="log">
+       <attribute name="title">
+        <string>Log</string>
+       </attribute>
+       <widget class="QTextEdit" name="logText">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>10</y>
+          <width>681</width>
+          <height>481</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -243,48 +293,6 @@
         </property>
         <property name="text">
          <string>select_2</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tabNewPoint">
-       <attribute name="title">
-        <string>Tab 2</string>
-       </attribute>
-       <widget class="QWidget" name="verticalLayoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>240</y>
-          <width>291</width>
-          <height>50</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout"/>
-       </widget>
-       <widget class="QPushButton" name="calculNewPoint">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>60</y>
-          <width>141</width>
-          <height>27</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Calcul new point</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="labelNewPoint">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>40</y>
-          <width>231</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
         </property>
        </widget>
       </widget>
