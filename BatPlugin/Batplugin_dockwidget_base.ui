@@ -112,7 +112,6 @@
          </widget>
         </item>
        </layout>
->>>>>>> 6bd5e81f8e73b6b1e87d9280fee572b62a049736
       </widget>
       <widget class="QWidget" name="log">
        <attribute name="title">
