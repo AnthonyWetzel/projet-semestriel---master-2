@@ -22,10 +22,7 @@
 """
 from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
-try:
-    from qgis.PyQt.QtGui import QAction
-except:
-    from qgis.PyQt.QtWidgets import QAction
+from .compat2qgis import QAction
 
 # Initialize Qt resources from file resources.py
 from . import resources

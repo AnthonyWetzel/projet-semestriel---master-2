@@ -3,7 +3,7 @@ from qgis.utils import iface
 from qgis.core import *
 from .clearLayers import *
 from .compat2qgis import buildGeomPoint
-from .compat2qgis import addMapLayers
+from .compat2qgis import QgsProject
 
 def createPoints(coordPoint):
 	clearBatLayer()
@@ -19,4 +19,4 @@ def createPoints(coordPoint):
 
 		prov_point.addFeatures([feat_point])
 		layer_point.updateExtents()
-		addMapLayers([layer_point])
+		QgsProject.instance().addMapLayers([layer_point])

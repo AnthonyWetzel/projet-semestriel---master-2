@@ -20,8 +20,9 @@ else:
     from qgis.core import Qgis as QGis
 
 if QGis.QGIS_VERSION_INT >= 30000:
-    addMapLayer = core.QgsProject.instance().addMapLayer
-    addMapLayers = core.QgsProject.instance().addMapLayers
+    from qgis.PyQt.QtWidgets import QAction
+    from qgis.core import QgsProject
+
     buildGeomPoint = lambda x, y: QgsGeometry.fromPointXY(QgsPointXY(x, y))
 
     message_log_levels = {
@@ -31,8 +32,9 @@ if QGis.QGIS_VERSION_INT >= 30000:
     }
     message_bar_levels = message_log_levels
 else:
-    addMapLayer = core.QgsMapLayerRegistry.instance().addMapLayer
-    addMapLayers = core.QgsMapLayerRegistry.instance().addMapLayers
+    from qgis.PyQt.QtGui import QAction
+    from qgis.core import QgsMapLayerRegistry as QgsProject
+
     buildGeomPoint = lambda x, y: QgsGeometry.fromPoint(QgsPoint(x, y))
 
     message_log_levels = {
