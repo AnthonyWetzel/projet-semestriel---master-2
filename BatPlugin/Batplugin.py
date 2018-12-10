@@ -173,11 +173,19 @@ class BatPlugin:
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
         icon_path = ':/plugins/BatPlugin/icon.png'
-        self.add_action(
+        actionOpen = self.add_action(
             icon_path,
-            text=self.tr(u''),
+            text=self.tr(u'Open Batplugin'),
             callback=self.run,
             parent=self.iface.mainWindow())
+        # Configure shortcut (use configured one if any)
+        DEFAULT = "Ctrl+Alt+B"
+        settings = QSettings()
+        settings.beginGroup('shortcuts')
+        shortcut = settings.value(actionOpen.text())
+        if shortcut == None:
+            shortcut = DEFAULT
+        self.iface.registerMainWindowAction(actionOpen, shortcut)
 
     #--------------------------------------------------------------------------
 
