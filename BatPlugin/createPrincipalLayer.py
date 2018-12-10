@@ -2,6 +2,8 @@
 from qgis.utils import iface
 from qgis.core import *
 from .clearLayers import *
+from .compat2qgis import buildGeomPoint
+from .compat2qgis import addMapLayers
 
 def createPoints(coordPoint):
 	clearBatLayer()
@@ -12,16 +14,9 @@ def createPoints(coordPoint):
 		inX = point[0]
 		inY = point[1]
 		feat_point = QgsFeature()
-		try:
-			point = QgsPoint(inX,inY)
-			feat_point.setGeometry(QgsGeometry.fromPoint(point))
-		except:
-			point = QgsPointXY(inX,inY)
-			feat_point.setGeometry(QgsGeometry.fromPointXY(point))
+		geom_point = buildGeomPoint(inX,inY)
+		feat_point.setGeometry(geom_point)
 
 		prov_point.addFeatures([feat_point])
 		layer_point.updateExtents()
-		try:
-			QgsMapLayerRegistry.instance().addMapLayers([layer_point])
-		except:
-			QgsProject.instance().addMapLayers([layer_point])
+		addMapLayers([layer_point])

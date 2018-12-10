@@ -3,6 +3,7 @@ from qgis.utils import iface
 from qgis.core import *
 from .algorithmNewPoint import *
 from .clearLayers import *
+from .compat2qgis import addMapLayers
 
 def createLines(coordLines):
 	clearLinesLayer()
@@ -29,7 +30,4 @@ def createLines(coordLines):
 	layer_line.updateExtents()
 	 
 	# Add the layer to the Layers panel
-	try:
-		QgsMapLayerRegistry.instance().addMapLayers([layer_line])
-	except:
-		QgsProject.instance().addMapLayers([layer_line])
+	addMapLayers([layer_line])
