@@ -175,7 +175,7 @@ class BatPlugin:
         icon_path = ':/plugins/BatPlugin/icon.png'
         actionOpen = self.add_action(
             icon_path,
-            text=self.tr(u'Open Batplugin'),
+            text=self.tr(u'Open/close Batplugin'),
             callback=self.run,
             parent=self.iface.mainWindow())
         # Configure shortcut (use configured one if any)
@@ -245,3 +245,5 @@ class BatPlugin:
             # TODO: fix to allow choice of dock location
             self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
+        else:
+            self.dockwidget.close()
