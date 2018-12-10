@@ -110,12 +110,12 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.tableView.setSelectionBehavior(QTableView.SelectRows);
         
 
-    """Functions to check"""
-    """
     def closeEvent(self, event):
         self.closingPlugin.emit()
         event.accept()
 
+    """Functions to check"""
+    """
     def slotAddItemcombo(self):
         self.comboBox.clear()
         self.comboBox.addItem("")
