@@ -36,11 +36,8 @@ from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsExpression
 from .clearLayers import *
-
-try:
-    from qgis.PyQt.QtGui import QDockWidget, QTableView
-except:
-    from qgis.PyQt.QtWidgets import QDockWidget, QTableView
+from .compat import get_field
+from .compat2qgis import QDockWidget, QTableView
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'Batplugin_dockwidget_base.ui'))
@@ -291,10 +288,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             dlg = QFileDialog()
             dlg.setFileMode(QFileDialog.AnyFile)
 
-            try:
-                dlg.setFilter("Text files (*.csv)")
-            except:
-                dlg.setNameFilter("Text files (*.csv)")
+            dlg.setNameFilter("Text files (*.csv)")
 
             if dlg.exec_():
                 filenames = dlg.selectedFiles()
@@ -322,16 +316,10 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             """
         with open(filenames, "rt") as fileInput:
             for row in csv.reader(fileInput):  
-                try:
-                        items = [
-                            QtGui.QStandardItem(field.decode('utf-8'))
-                            for field in row
-                        ]
-                except:
-                        items = [
-                            QtGui.QStandardItem(field)
-                            for field in row
-                        ]
+                items = [
+                    QtGui.QStandardItem(get_field(field))
+                    for field in row
+                ]
                 if flag_header == 0:
                     warning_header,fatal_header = self.header_validation(items)
                     if (len(fatal_header) == 0 and len(warning_header) == 0):

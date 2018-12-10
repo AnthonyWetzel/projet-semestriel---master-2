@@ -20,33 +20,33 @@ else:
     from qgis.core import Qgis as QGis
 
 if QGis.QGIS_VERSION_INT >= 30000:
-    from qgis.PyQt.QtWidgets import QAction
+    from qgis.PyQt.QtWidgets import QAction, QDockWidget, QTableView
     from qgis.core import QgsProject
 
     buildGeomPoint = lambda x, y: QgsGeometry.fromPointXY(QgsPointXY(x, y))
 
-    message_log_levels = {
-        "Info": QGis.Info,
-        "Warning": QGis.Warning,
-        "Critical": QGis.Critical,
-    }
-    message_bar_levels = message_log_levels
+#    message_log_levels = {
+#        "Info": QGis.Info,
+#        "Warning": QGis.Warning,
+#        "Critical": QGis.Critical,
+#    }
+#    message_bar_levels = message_log_levels
 else:
-    from qgis.PyQt.QtGui import QAction
+    from qgis.PyQt.QtGui import QAction, QDockWidget, QTableView
     from qgis.core import QgsMapLayerRegistry as QgsProject
 
     buildGeomPoint = lambda x, y: QgsGeometry.fromPoint(QgsPoint(x, y))
 
-    message_log_levels = {
-        "Info": QgsMessageLog.INFO,
-        "Warning": QgsMessageLog.WARNING,
-        "Critical": QgsMessageLog.CRITICAL,
-    }
-    message_bar_levels = {
-        "Info": QgsMessageBar.INFO,
-        "Warning": QgsMessageBar.WARNING,
-        "Critical": QgsMessageBar.CRITICAL,
-    }
+#    message_log_levels = {
+#        "Info": QgsMessageLog.INFO,
+#        "Warning": QgsMessageLog.WARNING,
+#        "Critical": QgsMessageLog.CRITICAL,
+#    }
+#    message_bar_levels = {
+#        "Info": QgsMessageBar.INFO,
+#        "Warning": QgsMessageBar.WARNING,
+#        "Critical": QgsMessageBar.CRITICAL,
+#    }
 
 #def getCanvasDestinationCrs(iface):
 #    if QGis.QGIS_VERSION_INT >= 30000:
