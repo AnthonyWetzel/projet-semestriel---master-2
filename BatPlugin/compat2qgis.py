@@ -11,8 +11,6 @@
 """
 from qgis import core
 from qgis.core import QgsGeometry
-from qgis.core import QgsPoint
-from qgis.core import QgsPointXY
 
 if hasattr(core, "QGis"):
     from qgis.core import QGis
@@ -22,6 +20,7 @@ else:
 if QGis.QGIS_VERSION_INT >= 30000:
     from qgis.PyQt.QtWidgets import QAction, QDockWidget, QTableView
     from qgis.core import QgsProject
+    from qgis.core import QgsPointXY
 
     buildGeomPoint = lambda x, y: QgsGeometry.fromPointXY(QgsPointXY(x, y))
 
@@ -34,6 +33,7 @@ if QGis.QGIS_VERSION_INT >= 30000:
 else:
     from qgis.PyQt.QtGui import QAction, QDockWidget, QTableView
     from qgis.core import QgsMapLayerRegistry as QgsProject
+    from qgis.core import QgsPoint
 
     buildGeomPoint = lambda x, y: QgsGeometry.fromPoint(QgsPoint(x, y))
 
