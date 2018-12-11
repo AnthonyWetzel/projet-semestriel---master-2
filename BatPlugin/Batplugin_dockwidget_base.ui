@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="init_tab">
        <attribute name="title">
@@ -126,114 +126,6 @@
          </widget>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Tab 1</string>
-       </attribute>
-       <widget class="QWidget" name="formLayoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>20</y>
-          <width>160</width>
-          <height>54</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Point</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="comboBox"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QPushButton" name="btnValider">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>170</y>
-          <width>121</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>valider</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="btnChoisir">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>30</y>
-          <width>79</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>choisir</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>420</x>
-          <y>90</y>
-          <width>161</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>signal ComboBox</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="btnRecenter">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>120</y>
-          <width>79</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>recadrer</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="btnSelect1">
-        <property name="geometry">
-         <rect>
-          <x>300</x>
-          <y>160</y>
-          <width>79</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>select_1</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="btnSelect2">
-        <property name="geometry">
-         <rect>
-          <x>430</x>
-          <y>160</y>
-          <width>79</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>select_2</string>
-        </property>
-       </widget>
       </widget>
      </widget>
     </item>

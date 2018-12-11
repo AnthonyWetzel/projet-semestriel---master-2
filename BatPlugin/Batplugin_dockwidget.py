@@ -2,13 +2,7 @@
 """
 /***************************************************************************
  BatPluginDockWidget
-                                 A QGIS plugin
- test
                              -------------------
-        begin                : 2018-11-10
-        git sha              : $Format:%H$
-        copyright            : (C) 2018 by chrwiziCorp
-        email                : chrwiziCorp@DotCom
  ***************************************************************************/
 
 /***************************************************************************
@@ -29,7 +23,7 @@ from qgis.PyQt.QtGui import *
 from qgis.PyQt.QtWidgets import *
 
 from .createLineLayer import *
-from .algorithmNewPoint import *
+from .algorithmNewPoint import dst
 from .createPrincipalLayer import *
 
 from qgis.PyQt import QtGui, uic
@@ -67,28 +61,10 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
     def __init__(self, parent=None):
         """Constructor."""
         super(BatPluginDockWidget, self).__init__(parent)
-        # Set up the user interface from Designer.
-        # After setupUI you can access any designer object by doing
-        # self.<objectname>, and you can use autoconnect slots - see
-        # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
-        # #widgets-and-dialogs-with-auto-connect
-        
         self.setupUi(self)
-
-        #self.ifaceRef=None
-        
-        #Not used statements
-        #self.individus=[]
-        #self.counter=0
-        #self.btnValider.clicked.connect(self.slotAddItemcombo)
-        #self.comboBox.currentIndexChanged.connect(self.slotLabelChange)
-        #self.btnRecenter.clicked.connect(self.slotRecenterToSelectedPoints)
-        #self.btnSelect1.clicked.connect(self.slotSelect)
-        #self.btnSelect2.clicked.connect(self.slotDeselect)
-        
-        """Used statements
+        """
             Plugin actions"""
-        
+
         """Clear old layers"""
         clearLinesLayer()
         clearBatLayer()
@@ -98,68 +74,17 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.importButton.clicked.connect(self.initializeBatLayer) 
         self.currentProjectText.clear()
         self.saveButton.clicked.connect(self.save)
-        self.saveAsButton.clicked.connect(self.save_as)
-        
+        self.saveAsButton.clicked.connect(self.save_as)        
         """Calculation and creation layer observations"""
-        self.execLineLayerBtn.clicked.connect(self.createLineLayer)
-        
+        self.execLineLayerBtn.clicked.connect(self.createLineLayer)        
         """Refresh project in table"""
         self.refreshButton.clicked.connect(self.refresh)
-
         """Table actions"""
         self.tableView.setSelectionBehavior(QTableView.SelectRows);
         
-
     def closeEvent(self, event):
         self.closingPlugin.emit()
         event.accept()
-
-    """Functions to check"""
-    """
-    def slotAddItemcombo(self):
-        self.comboBox.clear()
-        self.comboBox.addItem("")
-        layer=self.ifaceRef.activeLayer()
-        features=layer.getFeatures()
-        for feature in features:
-            self.comboBox.addItem(feature['individu'])
-
-    def slotLabelChange(self):
-        self.counter+=1
-        self.label_2.setText(str(self.comboBox.currentText()))
-
-        #self.ifaceRef.activeLayer().select(self.comboBox.currentIndex())
-        #self.ifaceRef.activeLayer().selectByExpression("individu ="+str(self.comboBox.currentText()))
-        layer=self.ifaceRef.activeLayer()
-        #layer.selectByExpression("individu ="+str(self.comboBox.currentText()))
-        seletedItem=str(self.comboBox.currentText())
-        #expression=QgsExpression( " \"individu\" = '{}' ".format(seletedItem))
-        exp="individu = '%s'"%str(self.comboBox.currentText())
-        #layer.selectByExpression("individu ='%s'"%str(self.comboBox.currentText()))
-        layer.selectByExpression(exp)
-        #layer.select(self.comboBox.currentIndex())
-
-        ""Recentre le zoom sur les éléments sélectionnés""
-    def slotRecenterToSelectedPoints(self):
-        layer=self.ifaceRef.activeLayer()
-        canvas=self.ifaceRef.mapCanvas()
-        canvas.zoomToSelected()
-
-
-    def slotSelect(self):
-        layer=self.ifaceRef.activeLayer()
-        layer.select(0)
-
-    def slotDeselect(self):
-        layer=self.ifaceRef.activeLayer()
-        layer.deselect(6)
-
-    def setIfaceRef(self,iface):
-        self.ifaceRef=iface
-
-    """
-
-    """Checked Plugin Functions """
 
     """Refresh current project after modifications"""
     def refresh(self):
@@ -172,14 +97,13 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.logText.insertPlainText('Project refresh \n')
         except:
             QMessageBox.critical(w, "Message", "Refreshing view error.")
-            #QMessageBox.question(w, 'Message', "Do you like Python?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
     """Color the rows that have errors"""
     def color(self,row_indx_fail):
         for col in range(self.model.columnCount()):
             for i in range(len(row_indx_fail)):
 
-               self.model.setData(self.model.index(row_indx_fail[i], col), QBrush(QColor(Qt.red).lighter()), QtCore.Qt.BackgroundRole)
+               self.model.setData(self.model.index(row_indx_fail[i]-1, col), QBrush(QColor(Qt.red).lighter()), QtCore.Qt.BackgroundRole)
 
     """Create the observations layer from the imported csv file"""
     def createBatLayer(self):
@@ -279,8 +203,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.createBatLayer()
         else:
             self.logText.insertPlainText('Error initializing BatLayer.\n')
-            QMessageBox.information(w, "Message", "No project imported.")
-            
+            QMessageBox.information(w, "Message", "No project imported.")            
 
     """Import csv file function"""
     def getfile(self):        
@@ -299,6 +222,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         except:
             self.logText.insertPlainText('Error importing file .\n')
             QMessageBox.critical(w, "Message", "Error importing file.")
+
     """Create table from the project sended"""
     def createTable(self,filenames):
         #Configuration type of modeling and visualization of the data table
