@@ -2,11 +2,11 @@
 from qgis.utils import iface
 from qgis.core import *
 from .algorithmNewPoint import dst
-from .clearLayers import *
 from .compat2qgis import QgsProject
+from .compat2qgis import buildGeomPoint
 
-def createLines(coordLines):
-	clearLinesLayer()
+def createLayerLines(coordLines):
+	clearLayer('lineLayer')
 	# Specify the geometry type
 	layer_line = QgsVectorLayer('LineString?crs=epsg:4230','lineLayer','memory')
 
@@ -27,3 +27,23 @@ def createLines(coordLines):
 	layer_line.updateExtents()	 
 	# Add the layer to the Layers panel
 	QgsProject.instance().addMapLayers([layer_line])
+
+def createLayerPoints(coordPoint):
+	clearLayer('batLayer')
+	layer_point = QgsVectorLayer('Point?crs=epsg:4230', 'batLayer' , 'memory')
+	prov_point = layer_point.dataProvider()
+
+	for point in coordPoint:
+		inX = point[0]
+		inY = point[1]
+		feat_point = QgsFeature()
+		geom_point = buildGeomPoint(inX,inY)
+		feat_point.setGeometry(geom_point)
+
+		prov_point.addFeatures([feat_point])
+		layer_point.updateExtents()
+		QgsProject.instance().addMapLayers([layer_point])
+
+def clearLayer(layer):
+        layers = QgsProject.instance().mapLayersByName(layer)
+        QgsProject.instance().removeMapLayers([layer.id() for layer in layers])

@@ -22,39 +22,38 @@ from qgis.PyQt.QtCore import *
 from qgis.PyQt.QtGui import *
 from qgis.PyQt.QtWidgets import *
 
-from .createLineLayer import *
+from .createRemoveLayers import createLayerLines, createLayerPoints, clearLayer
 from .algorithmNewPoint import dst
-from .createPrincipalLayer import *
 
 from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsExpression
-from .clearLayers import *
+
 from .compat import get_field
 from .compat2qgis import QDockWidget, QTableView
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'Batplugin_dockwidget_base.ui'))
 
-"""Global variables """
-logCount = 0
-w = QWidget()
-ONE_KM = 12
-PAS = 0.1
-INDX_ID_OBS = 0
-INDX_ID_INDV = 1
-INDX_NOM_INDV = 2
-INDX_DATE = 3
-INDX_X = 4
-INDX_Y = 5
-INDX_AZMT = 6
-INDX_NIV_FILT = 7
-INDX_SIGN = 8
-INDX_COMM = 9
-HEADERS = ['id_observation','id_individu','nom_individu','date','coordonnees_wgs84_n',
-                    'coordonnees_wgs84_e','azimut','niveau_filtre','puissance_signal','commentaire']
-
 class BatPluginDockWidget(QDockWidget, FORM_CLASS):
+
+    """Global variables """
+    #logCount = 0
+    w = QWidget()
+    ONE_KM = 12
+    PAS = 0.1
+    INDX_ID_OBS = 0
+    INDX_ID_INDV = 1
+    INDX_NOM_INDV = 2
+    INDX_DATE = 3
+    INDX_X = 4
+    INDX_Y = 5
+    INDX_AZMT = 6
+    INDX_NIV_FILT = 7
+    INDX_SIGN = 8
+    INDX_COMM = 9
+    HEADERS = ['id_observation','id_individu','nom_individu','date','coordonnees_wgs84_n',
+                        'coordonnees_wgs84_e','azimut','niveau_filtre','puissance_signal','commentaire']
 
     closingPlugin = pyqtSignal()
 
@@ -64,10 +63,9 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.setupUi(self)
         """
             Plugin actions"""
-
         """Clear old layers"""
-        clearLinesLayer()
-        clearBatLayer()
+        clearLayer('lineLayer')
+        clearLayer('batLayer')
         self.logText.clear()
         self.logText.insertPlainText('----------------------------------------\nFind here log messages\n----------------------------------------\n')
         """Import and export csv project actions"""
@@ -93,10 +91,10 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             fileName = self.currentProjectText.toPlainText()
             self.createTable(fileName)
             self.createBatLayer()
-            clearLinesLayer()
+            clearLayer('lineLayer')
             self.logText.insertPlainText('Project refresh \n')
         except:
-            QMessageBox.critical(w, "Message", "Refreshing view error.")
+            QMessageBox.critical(self.w, "Message", "Refreshing view error.")
 
     """Color the rows that have errors"""
     def color(self,row_indx_fail):
@@ -114,8 +112,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                 currentRow = self.model.takeRow(feature)
                 self.model.insertRow(feature,currentRow)
                 try:
-                    coord_x = float(currentRow[INDX_X].text())
-                    coord_y = float(currentRow[INDX_Y].text())
+                    coord_x = float(currentRow[self.INDX_X].text())
+                    coord_y = float(currentRow[self.INDX_Y].text())
                     coordPoint.append([coord_y,coord_x])
                 except:
                     self.logText.insertPlainText('Fatal error creating BatLayer - Coordinates fatal error at line  %d \n' % row_indx_fail)
@@ -123,9 +121,9 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                     row_fails.append(row_indx_fail)
                 row_indx_fail += 1
         if len(row_fails) > 0:
-            QMessageBox.information(w, "Message", "Error creating observations. Check the log.")
+            QMessageBox.information(self.w, "Message", "Error creating observations. Check the log.")
             self.color(row_fails) #Color to the error rows
-        createPoints(coordPoint) #function invocation to create observations on the map
+        createLayerPoints(coordPoint) #function invocation to create observations on the map
 
     """Create the lines layer from the imported csv file"""
     def createLineLayer(self):
@@ -137,13 +135,13 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                     currentRow = self.model.takeRow(feature)
                     self.model.insertRow(feature,currentRow)
                     try:
-                        x = float(currentRow[INDX_X].text())
-                        y = float(currentRow[INDX_Y].text())
-                        azimut = float(currentRow[INDX_AZMT].text())
-                        puissance_signal = float(currentRow[INDX_SIGN].text())
-                        niveau_filtre = float(currentRow[INDX_NIV_FILT].text())
+                        x = float(currentRow[self.INDX_X].text())
+                        y = float(currentRow[self.INDX_Y].text())
+                        azimut = float(currentRow[self.INDX_AZMT].text())
+                        puissance_signal = float(currentRow[self.INDX_SIGN].text())
+                        niveau_filtre = float(currentRow[self.INDX_NIV_FILT].text())
                         distance = puissance_signal + niveau_filtre
-                        res_distance = 1-(distance-ONE_KM)*PAS
+                        res_distance = 1-(distance-self.ONE_KM)*self.PAS
                         #layerLine.append([x,y,azimut,puissance_signal,niveau_filtre])
                         layerLine.append([x,y,azimut,res_distance])
                     except:
@@ -152,13 +150,13 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                         row_fails.append(row_indx_fail)
                     row_indx_fail += 1
             if len(row_fails) > 0:
-                QMessageBox.critical(w, "Message", "Error creating lines. Check the log.")
+                QMessageBox.critical(self.w, "Message", "Error creating lines. Check the log.")
                 self.color(row_fails) #Color to the error rows
             if len(layerLine) > 0:
-                createLines(layerLine) #function invocation to create lines on the map
+                createLayerLines(layerLine) #function invocation to create lines on the map
         except:
             self.logText.insertPlainText('Fatal error creating LineLayer \n')
-            QMessageBox.critical(w, "Message", "Fatal error creating lines.")
+            QMessageBox.critical(self.w, "Message", "Fatal error creating lines.")
 
     """Validation header function"""
     def header_validation(self,header_in):
@@ -170,25 +168,25 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         fatal = []
 
         try:
-            if header_in[INDX_ID_OBS].text() != HEADERS[INDX_ID_OBS]:
+            if header_in[self.INDX_ID_OBS].text() != self.HEADERS[self.INDX_ID_OBS]:
                 fatal.append('id_observation error')
-            if header_in[INDX_ID_INDV].text() != HEADERS[INDX_ID_INDV]:
+            if header_in[self.INDX_ID_INDV].text() != self.HEADERS[self.INDX_ID_INDV]:
                 fatal.append('id_individu fatal error')
-            if header_in[INDX_NOM_INDV].text() != HEADERS[INDX_NOM_INDV]:
+            if header_in[self.INDX_NOM_INDV].text() != self.HEADERS[self.INDX_NOM_INDV]:
                 fatal.append('nom_individu fatal error')
-            if header_in[INDX_DATE].text() != HEADERS[INDX_DATE]:
+            if header_in[self.INDX_DATE].text() != self.HEADERS[self.INDX_DATE]:
                 fatal.append('date fatal error')
-            if header_in[INDX_X].text() != HEADERS[INDX_X]:
+            if header_in[self.INDX_X].text() != self.HEADERS[self.INDX_X]:
                 fatal.append('coordonnees_wgs84_n fatal error')
-            if header_in[INDX_Y].text() != HEADERS[INDX_Y]:
+            if header_in[self.INDX_Y].text() != self.HEADERS[self.INDX_Y]:
                 fatal.append('coordonnees_wgs84_e fatal error')
-            if header_in[INDX_AZMT].text() != HEADERS[INDX_AZMT]:
+            if header_in[self.INDX_AZMT].text() != self.HEADERS[self.INDX_AZMT]:
                 fatal.append('azimut fatal error')
-            if header_in[INDX_NIV_FILT].text() != HEADERS[INDX_NIV_FILT]:
+            if header_in[self.INDX_NIV_FILT].text() != self.HEADERS[self.INDX_NIV_FILT]:
                 fatal.append('niveau_filtre fatal error')
-            if header_in[INDX_SIGN].text() != HEADERS[INDX_SIGN]:
+            if header_in[self.INDX_SIGN].text() != self.HEADERS[self.INDX_SIGN]:
                 fatal.append('puissance_signal fatal error')
-            if header_in[INDX_COMM].text() != HEADERS[INDX_COMM]:
+            if header_in[self.INDX_COMM].text() != self.HEADERS[self.INDX_COMM]:
                 fatal.append('commentaire fatal error')
         except:
             fatal.append('Fatal error validating header')
@@ -203,7 +201,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.createBatLayer()
         else:
             self.logText.insertPlainText('Error initializing BatLayer.\n')
-            QMessageBox.information(w, "Message", "No project imported.")            
+            QMessageBox.information(self.w, "Message", "No project imported.")            
 
     """Import csv file function"""
     def getfile(self):        
@@ -221,7 +219,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                 return filenames[0]
         except:
             self.logText.insertPlainText('Error importing file .\n')
-            QMessageBox.critical(w, "Message", "Error importing file.")
+            QMessageBox.critical(self.w, "Message", "Error importing file.")
 
     """Create table from the project sended"""
     def createTable(self,filenames):
@@ -231,7 +229,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
 
         #New reference to HEADERS 
         headers = []
-        for h in HEADERS:
+        for h in self.HEADERS:
             headers.append(h)
         flag_header = 0 #Check if the header is already in the model
 
@@ -262,7 +260,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             qTable.resizeRowsToContents()
             self.logText.insertPlainText('Table successfully created.\n')
         else:
-            QMessageBox.critical(w, "Message", "Header structure error. Check the log.")
+            QMessageBox.critical(self.w, "Message", "Header structure error. Check the log.")
             self.logText.insertPlainText('Imposible to create table. Table structure incorrect.\n')
             for err in fatal_header:
                 self.logText.insertPlainText(err)
@@ -296,7 +294,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.logText.insertPlainText('Project successfully saved .\n')
         except: 
             self.logText.insertPlainText('Imposible to save.\n')
-            QMessageBox.critical(w, "Message", 'Error saving project')
+            QMessageBox.critical(self.w, "Message", 'Error saving project')
 
     """Save the project with other name"""
     def save_as(self):
@@ -307,7 +305,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                 self.currentProjectText.setText(filename+'.csv')
                 self.save()
         except:
-            QMessageBox.critical(w, "Message", 'Error saving project. Check the log')
+            QMessageBox.critical(self.w, "Message", 'Error saving project. Check the log')
 
 """
     def setTableWidth(self):
