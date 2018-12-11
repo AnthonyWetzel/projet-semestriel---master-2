@@ -178,6 +178,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
     def color(self,row_indx_fail):
         for col in range(self.model.columnCount()):
             for i in range(len(row_indx_fail)):
+
                self.model.setData(self.model.index(row_indx_fail[i], col), QBrush(QColor(Qt.red).lighter()), QtCore.Qt.BackgroundRole)
 
     """Create the observations layer from the imported csv file"""
@@ -207,7 +208,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         try:
             layerLine = [] #List of data needed to create the lines of each observation
             row_indx_fail = 1
-            row_fails = [] #List of rows with errors at the data needed to create the lines
+            row_fails = [] #List of rows with errors of the data needed to create the lines
             for feature in range(self.model.rowCount()):
                     currentRow = self.model.takeRow(feature)
                     self.model.insertRow(feature,currentRow)
