@@ -37,8 +37,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 class BatPluginDockWidget(QDockWidget, FORM_CLASS):
 
-    """Global variables """
-    #logCount = 0
+    """Variables membre"""
     w = QWidget()
     ONE_KM = 12
     PAS = 0.1
