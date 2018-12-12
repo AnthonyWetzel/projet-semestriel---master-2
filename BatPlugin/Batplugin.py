@@ -25,31 +25,24 @@ from . import resources
 from .Batplugin_dockwidget import BatPluginDockWidget
 import os.path
 
-
 class BatPlugin:
     """QGIS Plugin Implementation."""
-
     def __init__(self, iface):
         # Save reference to the QGIS interface
         self.iface = iface
-
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
-
         # initialize locale
         locale = QSettings().value('locale/userLocale')[0:2]
         locale_path = os.path.join(
             self.plugin_dir,
             'i18n',
             'BatPlugin_{}.qm'.format(locale))
-
         if os.path.exists(locale_path):
             self.translator = QTranslator()
             self.translator.load(locale_path)
-
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
-
         self.dlg = BatPluginDockWidget()
         # Declare instance attributes
         self.actions = []
@@ -59,12 +52,10 @@ class BatPlugin:
         self.toolbar.setObjectName(u'BatPlugin')
         self.pluginIsActive = False
         self.dockwidget = None
-
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate('BatPlugin', message)
-
     def add_action(
         self,
         icon_path,
@@ -84,26 +75,19 @@ class BatPlugin:
 
         if status_tip is not None:
             action.setStatusTip(status_tip)
-
         if whats_this is not None:
             action.setWhatsThis(whats_this)
-
         if add_to_toolbar:
             self.toolbar.addAction(action)
-
         if add_to_menu:
             self.iface.addPluginToMenu(
                 self.menu,
                 action)
-
         self.actions.append(action)
-
         return action
-
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-
         icon_path = ':/plugins/BatPlugin/icon.png'
         actionOpen = self.add_action(
             icon_path,
@@ -120,10 +104,8 @@ class BatPlugin:
         self.iface.registerMainWindowAction(actionOpen, shortcut)
 
     #--------------------------------------------------------------------------
-
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
-
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
         self.pluginIsActive = False
@@ -140,24 +122,19 @@ class BatPlugin:
         del self.toolbar
 
     #--------------------------------------------------------------------------
-
     def run(self):
         """Run method that loads and starts the plugin"""
-
         if not self.pluginIsActive:
             self.pluginIsActive = True
-
             # dockwidget may not exist if:
             #    first run of plugin
             #    removed on close (see self.onClosePlugin method)
             if self.dockwidget == None:
                 # Create the dockwidget (after translation) and keep reference
                 self.dockwidget = BatPluginDockWidget()
-
                 #self.dockwidget.setIfaceRef(self.iface)
             # connect to provide cleanup on closing of dockwidget
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
-
             # show the dockwidget
             # TODO: fix to allow choice of dock location
             self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)

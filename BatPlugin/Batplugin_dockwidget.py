@@ -77,7 +77,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.refreshButton.clicked.connect(self.refresh)
         """Table actions"""
         self.tableView.setSelectionBehavior(QTableView.SelectRows);
-        
+    
+    """Clean Plugin close """
     def closeEvent(self, event):
         self.closingPlugin.emit()
         event.accept()
@@ -294,19 +295,3 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         except:
             QMessageBox.critical(self.w, "Message", 'Error saving project. Check the log')
 
-"""
-    def setTableWidth(self):
-        
-        width = self.model.verticalHeader().width()
-        print('first',width)
-        width += self.model.horizontalHeader().length()
-        print('second',width)
-        if self.model.verticalScrollBar().isVisible():
-            width += self.model.verticalScrollBar().width()
-        width += self.model.frameWidth() * 2
-        print('third',width)
-        self.model.setFixedWidth(width)
-
-    def resizeEvent(self, event):
-        self.setTableWidth()
-        super(BatPluginDockWidget, self).resizeEvent(event)"""
