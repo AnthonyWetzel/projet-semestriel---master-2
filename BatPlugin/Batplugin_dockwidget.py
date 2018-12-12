@@ -70,10 +70,9 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         """Import and export csv project actions"""
         self.importButton.clicked.connect(self.initializeBatLayer) 
         self.currentProjectText.clear()
+        """Save actions"""
         self.saveButton.clicked.connect(self.save)
-        self.saveAsButton.clicked.connect(self.save_as)        
-        """Calculation and creation layer observations"""
-        self.execLineLayerBtn.clicked.connect(self.createLineLayer)        
+        self.saveAsButton.clicked.connect(self.save_as)                
         """Refresh project in table"""
         self.refreshButton.clicked.connect(self.refresh)
         """Table actions"""
@@ -85,22 +84,19 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
 
     """Refresh current project after modifications"""
     def refresh(self):
-        try:            
+        if (self.currentProjectText.toPlainText()!=''):
             self.save()
             fileName = self.currentProjectText.toPlainText()
             self.createTable(fileName)
             self.createBatLayer()
             clearLayer('lineLayer')
             self.logText.insertPlainText('Project refresh \n')
-        except:
-            QMessageBox.critical(self.w, "Message", "Refreshing view error.")
 
     """Color the rows that have errors"""
     def color(self,row_indx_fail):
         for col in range(self.model.columnCount()):
             for i in range(len(row_indx_fail)):
-
-               self.model.setData(self.model.index(row_indx_fail[i]-1, col), QBrush(QColor(Qt.red).lighter()), QtCore.Qt.BackgroundRole)
+                self.model.setData(self.model.index(row_indx_fail[i]-1, col), QBrush(QColor(Qt.red).lighter()), QtCore.Qt.BackgroundRole)
 
     """Create the observations layer from the imported csv file"""
     def createBatLayer(self):
@@ -108,17 +104,16 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         row_indx_fail = 1
         row_fails = [] #List of rows with errors at the coordinates X and Y
         for feature in range(self.model.rowCount()):
-                currentRow = self.model.takeRow(feature)
-                self.model.insertRow(feature,currentRow)
-                try:
-                    coord_x = float(currentRow[self.INDX_X].text())
-                    coord_y = float(currentRow[self.INDX_Y].text())
-                    coordPoint.append([coord_y,coord_x])
-                except:
-                    self.logText.insertPlainText('Fatal error creating BatLayer - Coordinates fatal error at line  %d \n' % row_indx_fail)
-                    #print('Fatal error creating BatLayer - Coordinates fatal error at line ',row_indx_fail+1)
-                    row_fails.append(row_indx_fail)
-                row_indx_fail += 1
+            currentRow = self.model.takeRow(feature)
+            self.model.insertRow(feature, currentRow)
+            try:
+                coord_x = float(currentRow[self.INDX_X].text())
+                coord_y = float(currentRow[self.INDX_Y].text())
+                coordPoint.append([coord_y, coord_x])
+            except:
+                self.logText.insertPlainText('Fatal error creating BatLayer - Coordinates fatal error at line  %d \n' % row_indx_fail)
+                row_fails.append(row_indx_fail)
+            row_indx_fail += 1
         if len(row_fails) > 0:
             QMessageBox.information(self.w, "Message", "Error creating observations. Check the log.")
             self.color(row_fails) #Color to the error rows
@@ -126,39 +121,33 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
 
     """Create the lines layer from the imported csv file"""
     def createLineLayer(self):
-        try:
-            layerLine = [] #List of data needed to create the lines of each observation
-            row_indx_fail = 1
-            row_fails = [] #List of rows with errors of the data needed to create the lines
-            for feature in range(self.model.rowCount()):
-                    currentRow = self.model.takeRow(feature)
-                    self.model.insertRow(feature,currentRow)
-                    try:
-                        x = float(currentRow[self.INDX_X].text())
-                        y = float(currentRow[self.INDX_Y].text())
-                        azimut = float(currentRow[self.INDX_AZMT].text())
-                        puissance_signal = float(currentRow[self.INDX_SIGN].text())
-                        niveau_filtre = float(currentRow[self.INDX_NIV_FILT].text())
-                        distance = puissance_signal + niveau_filtre
-                        res_distance = 1-(distance-self.ONE_KM)*self.PAS
-                        #layerLine.append([x,y,azimut,puissance_signal,niveau_filtre])
-                        layerLine.append([x,y,azimut,res_distance])
-                    except:
-                        self.logText.insertPlainText('Fatal error creating LineLayer - Data error at line %d \n' % row_indx_fail)
-                        #print('Fatal error creating LineLayer - Data error at line ',row_indx_fail+1)
-                        row_fails.append(row_indx_fail)
-                    row_indx_fail += 1
-            if len(row_fails) > 0:
-                QMessageBox.critical(self.w, "Message", "Error creating lines. Check the log.")
-                self.color(row_fails) #Color to the error rows
-            if len(layerLine) > 0:
-                createLayerLines(layerLine) #function invocation to create lines on the map
-        except:
-            self.logText.insertPlainText('Fatal error creating LineLayer \n')
-            QMessageBox.critical(self.w, "Message", "Fatal error creating lines.")
+        layerLine = [] #List of data needed to create the lines of each observation
+        row_indx_fail = 1
+        row_fails = [] #List of rows with errors of the data needed to create the lines
+        for feature in range(self.model.rowCount()):
+            currentRow = self.model.takeRow(feature)
+            self.model.insertRow(feature, currentRow)
+            try:
+                x = float(currentRow[self.INDX_X].text())
+                y = float(currentRow[self.INDX_Y].text())
+                azimut = float(currentRow[self.INDX_AZMT].text())
+                puissance_signal = float(currentRow[self.INDX_SIGN].text())
+                niveau_filtre = float(currentRow[self.INDX_NIV_FILT].text())
+                distance = puissance_signal + niveau_filtre
+                res_distance = 1-(distance-self.ONE_KM)*self.PAS
+                layerLine.append([x, y, azimut, res_distance])
+            except:
+                self.logText.insertPlainText('Fatal error creating LineLayer - Data error at line %d \n' % row_indx_fail)
+                row_fails.append(row_indx_fail)
+            row_indx_fail += 1
+        if len(row_fails) > 0:
+            QMessageBox.information(self.w, "Message", "Error creating lines. Check the log.")
+            self.color(row_fails) #Color to the error rows
+        if len(layerLine) > 0:
+            createLayerLines(layerLine) #function invocation to create lines on the map
 
     """Validation header function"""
-    def header_validation(self,header_in):
+    def header_validation(self, header_in):
         """Lists of error analysing 
             Comparison of the input header and the expected header"""
         
@@ -198,6 +187,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         if filenames:
             self.createTable(filenames)
             self.createBatLayer()
+            self.createLineLayer()
         else:
             self.logText.insertPlainText('Error initializing BatLayer.\n')
             QMessageBox.information(self.w, "Message", "No project imported.")            
@@ -208,9 +198,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             #Select and import csv file
             dlg = QFileDialog()
             dlg.setFileMode(QFileDialog.AnyFile)
-
             dlg.setNameFilter("Text files (*.csv)")
-
             if dlg.exec_():
                 filenames = dlg.selectedFiles()
                 self.currentProjectText.setText(filenames[0]) # Set the name project in the label text
@@ -221,7 +209,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             QMessageBox.critical(self.w, "Message", "Error importing file.")
 
     """Create table from the project sended"""
-    def createTable(self,filenames):
+    def createTable(self, filenames):
         #Configuration type of modeling and visualization of the data table
         self.model = QtGui.QStandardItemModel(self)
         qTable = self.tableView
@@ -243,9 +231,9 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                     for field in row
                 ]
                 if flag_header == 0:
-                    warning_header,fatal_header = self.header_validation(items)
+                    warning_header, fatal_header = self.header_validation(items)
                     if (len(fatal_header) == 0 and len(warning_header) == 0):
-                        for it in range (10,len(items)):
+                        for it in range (10, len(items)):
                             headers.append(items[it].text())
                         self.model.setHorizontalHeaderLabels(headers)
                     flag_header += 1
@@ -283,7 +271,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                 for feature in range(self.model.rowCount()):
                     line_aux = []
                     currentRow = self.model.takeRow(feature)
-                    self.model.insertRow(feature,currentRow)
+                    self.model.insertRow(feature, currentRow)
                     for n in range(self.model.columnCount()):
                         line_aux.append((currentRow[n].text()).encode('utf-8').strip())
                     line = ','.join(line_aux) + '\n'

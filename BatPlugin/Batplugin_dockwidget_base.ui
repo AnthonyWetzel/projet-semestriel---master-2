@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="init_tab">
        <attribute name="title">
@@ -62,13 +62,6 @@
             <widget class="QPushButton" name="saveAsButton">
              <property name="text">
               <string>Save as...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="execLineLayerBtn">
-             <property name="text">
-              <string>Create Line Layer</string>
              </property>
             </widget>
            </item>
