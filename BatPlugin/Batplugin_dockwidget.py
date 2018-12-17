@@ -90,6 +90,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.createTable(fileName)
             self.createBatLayer()
             clearLayer('lineLayer')
+            self.createLineLayer()
             self.logText.insertPlainText('Project refresh \n')
 
     """Color the rows that have errors"""

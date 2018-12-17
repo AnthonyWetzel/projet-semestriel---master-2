@@ -6,6 +6,9 @@ from .compat2qgis import QgsProject
 from .compat2qgis import buildGeomPoint
 
 def createLayerLines(coordLines):
+	"""
+	Création d'un layer composé de lignes
+	"""
 	clearLayer('lineLayer')
 	# Specify the geometry type
 	layer_line = QgsVectorLayer('LineString?crs=epsg:4230','lineLayer','memory')
@@ -29,6 +32,9 @@ def createLayerLines(coordLines):
 	QgsProject.instance().addMapLayers([layer_line])
 
 def createLayerPoints(coordPoint):
+	"""
+	Création d'un layer composé de points
+	"""
 	clearLayer('batLayer')
 	layer_point = QgsVectorLayer('Point?crs=epsg:4230', 'batLayer' , 'memory')
 	prov_point = layer_point.dataProvider()
@@ -45,5 +51,8 @@ def createLayerPoints(coordPoint):
 		QgsProject.instance().addMapLayers([layer_point])
 
 def clearLayer(layer):
+	"""
+	Suppression d'un layer (clear)
+	"""
         layers = QgsProject.instance().mapLayersByName(layer)
         QgsProject.instance().removeMapLayers([layer.id() for layer in layers])
