@@ -71,7 +71,6 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.importButton.clicked.connect(self.initializeBatLayer) 
         self.currentProjectText.clear()
         """Save actions"""
-        self.saveButton.clicked.connect(self.save)
         self.saveAsButton.clicked.connect(self.save_as)                
         """Refresh project in table"""
         self.refreshButton.clicked.connect(self.refresh)
