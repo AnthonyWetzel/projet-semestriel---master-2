@@ -11,14 +11,14 @@ def createLayerLines(coordLines):
 	"""
 	clearLayer('lineLayer')
 	# Specify the geometry type
-	layer_line = QgsVectorLayer('LineString?crs=epsg:4230','lineLayer','memory')
+	layer_line = QgsVectorLayer('LineString?crs=epsg:4230', 'lineLayer', 'memory')
 
 	prov_line = layer_line.dataProvider()
 
 	features = []
 	for coordonnee in coordLines:
-		x_res,y_res = dst(coordonnee[0],coordonnee[1],coordonnee[2],coordonnee[3])
-		point = QgsPoint(coordonnee[1],coordonnee[0])
+		x_res,y_res = dst(coordonnee[0], coordonnee[1], coordonnee[2], coordonnee[3])
+		point = QgsPoint(coordonnee[1], coordonnee[0])
 		point2 = QgsPoint(y_res,x_res)
 		# Add a new feature and assign the geometry
 		feat = QgsFeature()
@@ -36,19 +36,19 @@ def createLayerPoints(coordPoint):
 	Création d'un layer composé de points
 	"""
 	clearLayer('batLayer')
-	layer_point = QgsVectorLayer('Point?crs=epsg:4230', 'batLayer' , 'memory')
+	layer_point = QgsVectorLayer('Point?crs=epsg:4230', 'batLayer', 'memory')
 	prov_point = layer_point.dataProvider()
 
 	for point in coordPoint:
 		inX = point[0]
 		inY = point[1]
 		feat_point = QgsFeature()
-		geom_point = buildGeomPoint(inX,inY)
+		geom_point = buildGeomPoint(inX, inY)
 		feat_point.setGeometry(geom_point)
-
 		prov_point.addFeatures([feat_point])
-		layer_point.updateExtents()
-		QgsProject.instance().addMapLayers([layer_point])
+
+	layer_point.updateExtents()
+	QgsProject.instance().addMapLayers([layer_point])
 
 def clearLayer(layer):
 	"""
