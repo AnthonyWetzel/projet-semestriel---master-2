@@ -51,8 +51,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
     INDX_NIV_FILT = 7
     INDX_SIGN = 8
     INDX_COMM = 9
-    HEADERS = ['id_observation','id_individu','nom_individu','date','coordonnees_wgs84_n',
-                        'coordonnees_wgs84_e','azimut','niveau_filtre','puissance_signal','commentaire']
+    HEADERS = ['id_observation', 'id_individu', 'nom_individu', 'date', 'coordonnees_wgs84_n', 
+                        'coordonnees_wgs84_e', 'azimut', 'niveau_filtre', 'puissance_signal', 'commentaire']
 
     closingPlugin = pyqtSignal()
 
@@ -71,7 +71,6 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.importButton.clicked.connect(self.initializeBatLayer) 
         self.currentProjectText.clear()
         """Save actions"""
-        self.saveButton.clicked.connect(self.save)
         self.saveAsButton.clicked.connect(self.save_as)                
         """Refresh project in table"""
         self.refreshButton.clicked.connect(self.refresh)
@@ -91,10 +90,11 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.createTable(fileName)
             self.createBatLayer()
             clearLayer('lineLayer')
+            self.createLineLayer()
             self.logText.insertPlainText('Project refresh \n')
 
     """Color the rows that have errors"""
-    def color(self,row_indx_fail):
+    def color(self, row_indx_fail):
         for col in range(self.model.columnCount()):
             for i in range(len(row_indx_fail)):
                 self.model.setData(self.model.index(row_indx_fail[i]-1, col), QBrush(QColor(Qt.red).lighter()), QtCore.Qt.BackgroundRole)
@@ -180,7 +180,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         except:
             fatal.append('Fatal error validating header')
             self.logText.insertPlainText('Fatal error validating header.\n')
-        return warning,fatal
+        return warning, fatal
         
     """Initialization table and BatLayer"""
     def initializeBatLayer(self):
@@ -288,7 +288,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
     def save_as(self):
         try:
             #Allows user to select the destination and save after
-            filename = QFileDialog.getSaveFileName(self, "Select output file ","", '*.csv')
+            filename = QFileDialog.getSaveFileName(self, "Select output file ", "", '*.csv')
             if (filename!=''):
                 self.currentProjectText.setText(filename+'.csv')
                 self.save()
