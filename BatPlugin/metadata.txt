@@ -10,12 +10,11 @@
 name=BatPlugin
 qgisMinimumVersion=2.0
 qgisMaximumVersion=3.99
-description=test
+description=This plugin allows to process data from a csv file
 version=0.1
-author=chrwiziCorp
-email=chrwiziCorp@DotCom
+author=Wetzel Anthony, Bello Fernando, Moyikoulou Chris-Féri
 
-about=Provide a brief description of the plugin and its purpose.
+about=This plugin allows to process data from a csv file.
 
 tracker=http://bugs
 repository=http://repo

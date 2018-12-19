@@ -2,7 +2,12 @@
 """
 /***************************************************************************
  BatPluginDockWidget
-                             -------------------
+                                 A QGIS plugin
+ This plugin allows to process data from a csv file
+                              -------------------
+        begin                : 2018-11-10
+        git sha              : $Format:%H$
+        copyright            : (C) 2018 by Wetzel Anthony, Bello Fernando, Moyikoulou Chris-Féri
  ***************************************************************************/
 
 /***************************************************************************
@@ -60,8 +65,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         """Constructor."""
         super(BatPluginDockWidget, self).__init__(parent)
         self.setupUi(self)
-        """
-            Plugin actions"""
+        """Used statements"""
+        """Plugin actions"""
         """Clear old layers"""
         clearLayer('lineLayer')
         clearLayer('batLayer')
@@ -71,19 +76,19 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         self.importButton.clicked.connect(self.initializeBatLayer) 
         self.currentProjectText.clear()
         """Save actions"""
-        self.saveAsButton.clicked.connect(self.save_as)                
+        self.saveAsButton.clicked.connect(self.save_as)
         """Refresh project in table"""
         self.refreshButton.clicked.connect(self.refresh)
         """Table actions"""
         self.tableView.setSelectionBehavior(QTableView.SelectRows);
     
-    """Clean Plugin close """
     def closeEvent(self, event):
+        """Clean Plugin close"""
         self.closingPlugin.emit()
         event.accept()
 
-    """Refresh current project after modifications"""
     def refresh(self):
+        """Refresh current project after modifications"""
         if (self.currentProjectText.toPlainText()!=''):
             self.save()
             fileName = self.currentProjectText.toPlainText()
@@ -93,14 +98,14 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.createLineLayer()
             self.logText.insertPlainText('Project refresh \n')
 
-    """Color the rows that have errors"""
     def color(self, row_indx_fail):
+        """Color the rows that have errors"""
         for col in range(self.model.columnCount()):
             for i in range(len(row_indx_fail)):
                 self.model.setData(self.model.index(row_indx_fail[i]-1, col), QBrush(QColor(Qt.red).lighter()), QtCore.Qt.BackgroundRole)
 
-    """Create the observations layer from the imported csv file"""
     def createBatLayer(self):
+        """Create the observations layer from the imported csv file"""
         coordPoint = [] # List of coordinates X,Y to add to the map
         row_indx_fail = 1
         row_fails = [] #List of rows with errors at the coordinates X and Y
@@ -120,8 +125,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.color(row_fails) #Color to the error rows
         createLayerPoints(coordPoint) #function invocation to create observations on the map
 
-    """Create the lines layer from the imported csv file"""
     def createLineLayer(self):
+        """Create the lines layer from the imported csv file"""
         layerLine = [] #List of data needed to create the lines of each observation
         row_indx_fail = 1
         row_fails = [] #List of rows with errors of the data needed to create the lines
@@ -147,13 +152,13 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         if len(layerLine) > 0:
             createLayerLines(layerLine) #function invocation to create lines on the map
 
-    """Validation header function"""
     def header_validation(self, header_in):
-        """Lists of error analysing 
+        """Validation header function"""
+        """Lists of error analysing
             Comparison of the input header and the expected header"""
         
         #lists of errors found
-        warning = [] 
+        warning = []
         fatal = []
 
         try:
@@ -182,8 +187,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.logText.insertPlainText('Fatal error validating header.\n')
         return warning, fatal
         
-    """Initialization table and BatLayer"""
     def initializeBatLayer(self):
+        """Initialization table and BatLayer"""
         filenames = self.getfile()
         if filenames:
             self.createTable(filenames)
@@ -191,10 +196,10 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.createLineLayer()
         else:
             self.logText.insertPlainText('Error initializing BatLayer.\n')
-            QMessageBox.information(self.w, "Message", "No project imported.")            
+            QMessageBox.information(self.w, "Message", "No project imported.")
 
-    """Import csv file function"""
-    def getfile(self):        
+    def getfile(self):
+        """Import csv file function"""
         try:
             #Select and import csv file
             dlg = QFileDialog()
@@ -209,13 +214,13 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.logText.insertPlainText('Error importing file .\n')
             QMessageBox.critical(self.w, "Message", "Error importing file.")
 
-    """Create table from the project sended"""
     def createTable(self, filenames):
+        """Create table from the project sended"""
         #Configuration type of modeling and visualization of the data table
         self.model = QtGui.QStandardItemModel(self)
         qTable = self.tableView
 
-        #New reference to HEADERS 
+        #New reference to HEADERS
         headers = []
         for h in self.HEADERS:
             headers.append(h)
@@ -254,15 +259,15 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                 self.logText.insertPlainText(err)
             self.currentProjectText.clear()
 
-    """Save current project"""
     def save(self):
+        """Save current project"""
         try:
-            #Read and open the current project 
+            #Read and open the current project
             fileName = self.currentProjectText.toPlainText()
             output_file = open(fileName, 'w')
-            #Write into current file project the table content 
+            #Write into current file project the table content
             with open(fileName, "wb") as fileOutput:
-                writer = csv.writer(fileOutput)        
+                writer = csv.writer(fileOutput)
                 line_aux = []
                 for n in range(self.model.columnCount()):
                     line_aux.append((self.model.horizontalHeaderItem(n).text()).encode('utf-8').strip())
@@ -284,8 +289,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             self.logText.insertPlainText('Imposible to save.\n')
             QMessageBox.critical(self.w, "Message", 'Error saving project')
 
-    """Save the project with other name"""
     def save_as(self):
+        """Save the project with other name"""
         try:
             #Allows user to select the destination and save after
             filename = QFileDialog.getSaveFileName(self, "Select output file ", "", '*.csv')
@@ -294,4 +299,3 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                 self.save()
         except:
             QMessageBox.critical(self.w, "Message", 'Error saving project. Check the log')
-
