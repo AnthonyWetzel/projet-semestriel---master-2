@@ -48,5 +48,5 @@ def createLayerPoints(coordPoint):
 
 def clearLayer(layer):
     """Suppression d'un layer (clear)"""
-        layers = QgsProject.instance().mapLayersByName(layer)
-        QgsProject.instance().removeMapLayers([layer.id() for layer in layers])
+    layers = QgsProject.instance().mapLayersByName(layer)
+    QgsProject.instance().removeMapLayers([layer.id() for layer in layers])
