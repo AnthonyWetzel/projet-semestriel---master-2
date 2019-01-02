@@ -41,13 +41,14 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
     w = QWidget()
     ONE_KM = 12
     PAS = 0.1
+    """ indexes of used field """
     INDX_ID_OBS = 0
     INDX_ID_INDV = 1
-    INDX_NOM_INDV = 2
-    INDX_DATE = 3
-    INDX_X = 4
-    INDX_Y = 5
-    INDX_AZMT = 6
+    INDX_NOM_INDV = 2           #index of field name of observed individu
+    INDX_DATE = 3               #index of field date of observation
+    INDX_X = 4                  #index of field cordonate X of the observation
+    INDX_Y = 5                  #index of cordonate y of the observation
+    INDX_AZMT = 6               #index of f
     INDX_NIV_FILT = 7
     INDX_SIGN = 8
     INDX_COMM = 9
