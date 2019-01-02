@@ -10,15 +10,16 @@
 name=BatPlugin
 qgisMinimumVersion=2.0
 qgisMaximumVersion=3.99
-description=test
+description=Ce plugin a été dévellopé dans le cadre d'un projet semestriel  des étudiants en dernière année de master en Génie logiciel
+à l'Université de Franche Comté. Il a pour but d'apporter une aide à la visualisation des chauves souris .
 version=0.1
-author=chrwiziCorp
-email=chrwiziCorp@DotCom
+author=Moyikoulou chris féri,Wetzel Anthony, Bello fernando
+email=
 
 about=Provide a brief description of the plugin and its purpose.
 
 tracker=http://bugs
-repository=http://repo
+repository=https://gitlab.com/Anthony-Wetzel/projet-semestriel---master-2.git
 # End of mandatory metadata
 
 # Recommended items:
@@ -29,7 +30,7 @@ repository=http://repo
 # Tags are comma separated with spaces allowed
 tags=python
 
-homepage=http://homepage
+homepage=https://gitlab.com/Anthony-Wetzel/projet-semestriel---master-2
 category=Plugins
 icon=icon.png
 # experimental flag
