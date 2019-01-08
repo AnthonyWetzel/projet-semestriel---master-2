@@ -88,14 +88,15 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
         event.accept()
 
     def refresh(self):
-        """Refresh current project after modifications"""
+        """Refresh modifications in a temp file"""
         if (self.currentProjectText.toPlainText()!=''):
-            self.save()
-            fileName = self.currentProjectText.toPlainText()
-            self.createTable(fileName)
+            tempFile = (self.currentProjectText.toPlainText()+'_tmp')
+            self.save(tempFile)
+            self.createTable(tempFile)
             self.createBatLayer()
             clearLayer('lineLayer')
             self.createLineLayer()
+            os.remove(tempFile)
             self.logText.insertPlainText('Project refresh \n')
 
     def color(self, row_indx_fail):
@@ -259,11 +260,10 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                 self.logText.insertPlainText(err)
             self.currentProjectText.clear()
 
-    def save(self):
+    def save(self,fileName):
         """Save current project"""
         try:
-            #Read and open the current project
-            fileName = self.currentProjectText.toPlainText()
+            #Open the current project
             output_file = open(fileName, 'w')
             #Write into current file project the table content
             with open(fileName, "wb") as fileOutput:
@@ -286,9 +286,13 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
                 output_file.close()
             self.logText.insertPlainText('Project successfully saved .\n')
         except: 
+            #If error saving, created file is deleted and the text box project is cleared
+            if os.path.exists(fileName):
+                os.remove(fileName)
+            self.currentProjectText.clear()
             self.logText.insertPlainText('Imposible to save.\n')
             QMessageBox.critical(self.w, "Message", 'Error saving project')
-
+            
     def save_as(self):
         """Save the project with other name"""
         try:
@@ -296,6 +300,7 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             filename = QFileDialog.getSaveFileName(self, "Select output file ", "", '*.csv')
             if (filename!=''):
                 self.currentProjectText.setText(filename+'.csv')
-                self.save()
+                fileName = self.currentProjectText.toPlainText()
+                self.save(fileName)
         except:
             QMessageBox.critical(self.w, "Message", 'Error saving project. Check the log')
