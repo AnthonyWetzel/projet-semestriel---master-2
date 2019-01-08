@@ -10,25 +10,12 @@
 name=BatPlugin
 qgisMinimumVersion=2.0
 qgisMaximumVersion=3.99
-<<<<<<< HEAD
-description=Ce plugin a été dévellopé dans le cadre d'un projet semestriel  des étudiants en dernière année de master en Génie logiciel
-à l'Université de Franche Comté. Il a pour but d'apporter une aide à la visualisation des chauves souris .
-version=0.1
-author=Moyikoulou chris féri,Wetzel Anthony, Bello fernando
-email=
-=======
 description=This plugin allows to process data from a csv file
 version=0.1
 author=Wetzel Anthony, Bello Fernando, Moyikoulou Chris-Féri
->>>>>>> dc74f9fe5316d0569b3d2332bdcf7a89eec0fbc9
 
 about=This plugin allows to process data from a csv file.
 
-<<<<<<< HEAD
-tracker=http://bugs
-repository=https://gitlab.com/Anthony-Wetzel/projet-semestriel---master-2.git
-=======
->>>>>>> dc74f9fe5316d0569b3d2332bdcf7a89eec0fbc9
 # End of mandatory metadata
 
 # Recommended items:

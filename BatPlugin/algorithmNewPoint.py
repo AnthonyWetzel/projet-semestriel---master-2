@@ -4,13 +4,13 @@ from math import *
 RADIAN_DE_LA_TERRE=6371
 
 """
-    Fonctionnalité inspiré du lien ci-dessous :
+    Fonctionnalité inspiré du lien ci-dessous : 
     http://www.movable-type.co.uk/scripts/latlong.html
 """
 
 def dst(latitude,longitude,azimut,distance):
     """
-        Calcul du nouveau point en fonction des paramètres d'un point (latitude, longitude, azimut, distance)
+    Calcul du nouveau point en fonction des paramètres d'un point (latitude, longitude, azimut, distance)
     """
     # Transformation des valeurs de degré en radian
     rLat=radians(latitude)
@@ -25,8 +25,4 @@ def dst(latitude,longitude,azimut,distance):
     rLong2=rLong+atan2(param2,param1)
 
     # Transformation des valeurs de radian en degré
-<<<<<<< HEAD
     return degrees(rLat2),degrees(rLong2)
-=======
-    return degrees(rLat2),degrees(rLong2)
->>>>>>> dc74f9fe5316d0569b3d2332bdcf7a89eec0fbc9
