@@ -21,18 +21,15 @@
 """
 
 import os, csv, sys
-from qgis.PyQt import QtCore
+from qgis.PyQt import QtCore, QtGui, uic
+from qgis.core import QgsExpression
 
-from qgis.PyQt.QtCore import *
-from qgis.PyQt.QtGui import *
-from qgis.PyQt.QtWidgets import *
+from qgis.PyQt.QtGui import QBrush, QColor
+from qgis.PyQt.QtCore import Qt, pyqtSignal
+from qgis.PyQt.QtWidgets import QWidget, QMessageBox, QFileDialog
 
 from .createRemoveLayers import createLayerLines, createLayerPoints, clearLayer
 from .algorithmNewPoint import dst
-
-from qgis.PyQt import QtGui, uic
-from qgis.PyQt.QtCore import pyqtSignal
-from qgis.core import QgsExpression
 
 from .compat import get_field
 from .compat2qgis import QDockWidget, QTableView
@@ -299,7 +296,8 @@ class BatPluginDockWidget(QDockWidget, FORM_CLASS):
             #Allows user to select the destination and save after
             filename = QFileDialog.getSaveFileName(self, "Select output file ", "", '*.csv')
             if (filename!=''):
-                self.currentProjectText.setText(filename+'.csv')
+                if (os.path.splitext(filename)[-1].lower() != '.csv'):
+                    self.currentProjectText.setText(filename+'.csv')
                 fileName = self.currentProjectText.toPlainText()
                 self.save(fileName)
         except:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*
 from qgis.utils import iface
-from qgis.core import *
+from qgis.core import QgsVectorLayer, QgsFeature, QgsPoint, QgsGeometry
 from .algorithmNewPoint import dst
 from .compat2qgis import QgsProject
 from .compat2qgis import buildGeomPoint
