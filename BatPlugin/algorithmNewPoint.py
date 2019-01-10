@@ -10,7 +10,7 @@ RADIAN_DE_LA_TERRE=6371
 
 def dst(latitude,longitude,azimut,distance):
     """
-    Calcul du nouveau point en fonction des paramètres d'un point (latitude, longitude, azimut, distance)
+        Calcul du nouveau point en fonction des paramètres d'un point (latitude, longitude, azimut, distance)
     """
     # Transformation des valeurs de degré en radian
     rLat=radians(latitude)
