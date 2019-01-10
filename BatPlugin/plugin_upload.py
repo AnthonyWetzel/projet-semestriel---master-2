@@ -2,7 +2,7 @@
 # coding=utf-8
 """This script uploads a plugin package on the server.
         Authors: A. Pasotti, V. Picavet
-        git sha              : $TemplateVCSFormat
+        git sha: $TemplateVCSFormat
 """
 
 import sys
@@ -51,7 +51,6 @@ def main(parameters, arguments):
         print "Fault code: %d" % err.faultCode
         print "Fault string: %s" % err.faultString
 
-
 def hide_password(url, start=6):
     """Returns the http url with password part replaced with '*'.
 
@@ -67,7 +66,6 @@ def hide_password(url, start=6):
         url[:start_position],
         '*' * (end_position - start_position),
         url[end_position:])
-
 
 if __name__ == "__main__":
     parser = OptionParser(usage="%prog [options] plugin.zip")

@@ -4,8 +4,8 @@ from math import *
 RADIAN_DE_LA_TERRE=6371
 
 """
-Fonctionnalité inspiré du lien ci-dessous : 
-http://www.movable-type.co.uk/scripts/latlong.html
+    Fonctionnalité inspiré du lien ci-dessous : 
+    http://www.movable-type.co.uk/scripts/latlong.html
 """
 
 def dst(latitude,longitude,azimut,distance):
@@ -26,4 +26,3 @@ def dst(latitude,longitude,azimut,distance):
 
     # Transformation des valeurs de radian en degré
     return degrees(rLat2),degrees(rLong2)
-    

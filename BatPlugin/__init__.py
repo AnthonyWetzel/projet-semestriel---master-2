@@ -3,12 +3,11 @@
 /***************************************************************************
  BatPlugin
                                  A QGIS plugin
- test
-                             -------------------
+ This plugin allows to process data from a csv file
+                              -------------------
         begin                : 2018-11-10
-        copyright            : (C) 2018 by chrwiziCorp
-        email                : chrwiziCorp@DotCom
         git sha              : $Format:%H$
+        copyright            : (C) 2018 by Wetzel Anthony, Bello Fernando, Moyikoulou Chris-Féri
  ***************************************************************************/
 
 /***************************************************************************
@@ -21,7 +20,6 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
-
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name
